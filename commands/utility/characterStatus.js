@@ -30,7 +30,6 @@ module.exports = {
         let replyMessage = "```\n";
         replyMessage += `${characterName}의 숙제현황\n`;
         replyMessage += "|------------------------|\n";
-        // 그룹 이름 추가
         // 완료
         replyMessage += "|           완료          |\n";
         replyMessage += "|------------------------|\n";
