@@ -1,0 +1,40 @@
+name: CI/CD for develop branch
+
+# event trigger
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  CI-CD:
+    runs-on: ubuntu-latest
+    steps:
+      ## checkout
+      - uses: actions/checkout@v3
+
+      ## docker build & push to develop
+      - name: Docker build & push to dev
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_REPO }}/discord:develop .
+          docker push ${{ secrets.DOCKER_REPO }}/discord:develop
+
+      ## deploy to develop
+      - name: Deploy to dev
+        uses: appleboy/ssh-action@master
+        id: deploy-dev
+        with:
+          host: ${{ secrets.HOST_DEV }}
+          username: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.USER_PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo docker rm -f $(docker ps -qa)
+            sed -i "s/DISCORD_IMAGE_TAG=.*$/DISCORD_IMAGE_TAG=develop/" .env
+            docker pull ${{ secrets.DOCKER_REPO }}/discord:develop
+            docker-compose up -d
+            docker image prune -f
