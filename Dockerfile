@@ -11,4 +11,4 @@ COPY . /app
 
 EXPOSE 2000
 
-CMD ["node deploy-command.js && yarn start"]
+CMD ["node", "deploy-command.js", "&&", "yarn", "start"]
