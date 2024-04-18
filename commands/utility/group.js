@@ -32,7 +32,9 @@ module.exports = {
         replyMessage += "|          미완료         |\n";
         replyMessage += "|------------------------|\n";
         groups.forEach((group) => {
-          replyMessage += `| ${group.name} - ${group.raid} - ${group.difficulty} |\n`;
+          if (!group.done) {
+            replyMessage += `| ${group.name} - ${group.raid} - ${group.difficulty} |\n`;
+          }
         });
         replyMessage += "```";
         await interaction.reply(replyMessage);
