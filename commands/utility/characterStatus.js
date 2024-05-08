@@ -70,5 +70,5 @@ function generateTable(groups) {
       (group) => `| ${group.groupName} \n\t\t#${group.raid}-${group.difficulty}`
     )
     .join("\n");
-  return `\`\`\`\n${rows}\n\`\`\``;
+  return rows === "" ? `\`\`\`항목 없음\`\`\`` : `\`\`\`\n${rows}\n\`\`\``;
 }

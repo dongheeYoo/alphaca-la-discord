@@ -34,5 +34,5 @@ function generateTable(groups) {
   const rows = groups
     .map((group) => `| ${group.name} \n\t\t#${group.raid}-${group.difficulty}`)
     .join("\n");
-  return `\`\`\`\n${rows}\n\`\`\``;
+  return rows === "" ? `\`\`\`항목 없음\`\`\`` : `\`\`\`\n${rows}\n\`\`\``;
 }
