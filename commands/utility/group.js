@@ -14,33 +14,25 @@ module.exports = {
       if (groups.length === 0) {
         await interaction.reply("No groups found");
       } else {
-        let replyMessage = "```\n";
-        replyMessage += "|        공격대 현황      |\n";
-        replyMessage += "|------------------------|\n";
-        // 그룹 이름 추가
-        // 완료
-        replyMessage += "|           완료          |\n";
-        replyMessage += "|------------------------|\n";
-        groups.forEach((group) => {
-          if (group.done) {
-            replyMessage += `| ${group.name} - ${group.raid} - ${group.difficulty} |\n`;
-          }
-        });
-        // 미완료
-        replyMessage += "|------------------------|\n";
-        replyMessage += "|------------------------|\n";
-        replyMessage += "|          미완료         |\n";
-        replyMessage += "|------------------------|\n";
-        groups.forEach((group) => {
-          if (!group.done) {
-            replyMessage += `| ${group.name} - ${group.raid} - ${group.difficulty} |\n`;
-          }
-        });
-        replyMessage += "```";
-        await interaction.reply(replyMessage);
+        const completedGroups = groups.filter((group) => group.done);
+        const incompleteGroups = groups.filter((group) => !group.done);
+
+        const completedTable = generateTable(completedGroups);
+        const incompleteTable = generateTable(incompleteGroups);
+
+        await interaction.reply(
+          `===공대현황===\n\n완료:\n${completedTable}\n미완료:\n${incompleteTable}`
+        );
       }
     } catch (error) {
       await interaction.reply("Failed to load groups");
     }
   },
 };
+
+function generateTable(groups) {
+  const rows = groups
+    .map((group) => `| ${group.name} \n\t\t#${group.raid}-${group.difficulty}`)
+    .join("\n");
+  return `\`\`\`\n${rows}\n\`\`\``;
+}
