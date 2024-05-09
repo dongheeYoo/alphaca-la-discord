@@ -57,7 +57,7 @@ module.exports = {
                 break;
             }
             replyMessage += `| ${name}\n`;
-            replyMessage += `\t#${member.CharacterName}\n\t#${member.CharacterClassName}\n`;
+            replyMessage += `\t#${member.CharacterClassName} - ${member.CharacterName}\n`;
           });
         });
         replyMessage += "```";
